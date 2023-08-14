@@ -61,6 +61,7 @@
 		A65C12FF2A7D372F007D2F08 /* Talky.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Talky.entitlements; sourceTree = "<group>"; };
 		A65C13012A7F8272007D2F08 /* ChatDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailView.swift; sourceTree = "<group>"; };
 		A65C13032A7FA877007D2F08 /* RecentChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChatView.swift; sourceTree = "<group>"; };
+		A6DE7FFB2A8A6277002CE3B3 /* shot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shot.jpg; sourceTree = "<group>"; };
 		A6F3CF392A47275B009E6894 /* Talky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F3CF3C2A47275B009E6894 /* TalkyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkyApp.swift; sourceTree = "<group>"; };
 		A6F3CF402A47275C009E6894 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -152,6 +153,7 @@
 		A6F3CF302A47275B009E6894 = {
 			isa = PBXGroup;
 			children = (
+				A6DE7FFB2A8A6277002CE3B3 /* shot.jpg */,
 				A6F3CF3B2A47275B009E6894 /* Talky */,
 				A6F3CF3A2A47275B009E6894 /* Products */,
 			);
