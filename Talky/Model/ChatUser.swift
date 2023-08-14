@@ -13,13 +13,22 @@ struct ChatUser: Codable, Identifiable {
     @DocumentID var id: String?
     let uid, email: String
     let profileImageUrl: String?
+    let fcm: String?
+    
+    var username: String {
+        guard let atIndex = email.firstIndex(of: "@") else {
+            return email
+        }
+        return String(email[..<atIndex])
+    }
     
     // Custom initializer
-    init(id: String? = nil, uid: String, email: String, profileImageUrl: String? = nil) {
+    init(id: String? = nil, uid: String, email: String, profileImageUrl: String? = nil, fcm: String? = nil) {
         self.id = id
         self.uid = uid
         self.email = email
         self.profileImageUrl = profileImageUrl
+        self.fcm = fcm
     }
     
     enum CodingKeys: String, CodingKey {
@@ -27,6 +36,7 @@ struct ChatUser: Codable, Identifiable {
         case uid
         case email
         case profileImageUrl
+        case fcm
     }
     
     
@@ -41,6 +51,7 @@ struct ChatUser: Codable, Identifiable {
         uid = try container.decode(String.self, forKey: .uid)
         email = try container.decode(String.self, forKey: .email)
         profileImageUrl = try container.decode(String.self, forKey: .profileImageUrl)
+        fcm = try container.decode(String.self, forKey: .fcm)
         
     }
     
@@ -59,6 +70,7 @@ struct ChatUser: Codable, Identifiable {
         try container.encode(uid, forKey: .uid)
         try container.encode(email, forKey: .email)
         try container.encode(profileImageUrl, forKey: .profileImageUrl)
+        try container.encode(fcm, forKey: .fcm)
         //
                 
     }

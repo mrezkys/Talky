@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+enum ViewState{
+    case loading
+    case loaded
+    case empty
+    case error
+}
