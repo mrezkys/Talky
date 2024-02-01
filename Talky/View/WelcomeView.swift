@@ -8,63 +8,54 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @State var toRegister = false
-    @State var toLogin = false
+    
     var body: some View {
         NavigationView{
             ZStack{
                 Color("secondary").ignoresSafeArea()
-                
-                NavigationLink(destination: LoginxView(), isActive: $toLogin){
-                    EmptyView()
-                }
-                NavigationLink(destination: RegisterxView(), isActive: $toRegister){
-                    EmptyView()
-                }
                 VStack{
-                        VStack{
-                            Spacer()
-                        }
-                        .overlay {
-                            ZStack{
-                                Image("shots")
-                                    .padding(.top, 144)
-                                LinearGradient(
+                    VStack{
+                        Spacer()
+                    }
+                    .overlay {
+                        ZStack{
+                            Image("shots").padding(.top, 144)
+                            LinearGradient(
                                 stops: [
-                                Gradient.Stop(color: Color(red: 0.93, green: 0.94, blue: 0.97).opacity(0), location: 0.00),
-                                Gradient.Stop(color: Color(red: 0.93, green: 0.94, blue: 0.97), location: 1.00),
+                                    Gradient.Stop(color: Color(red: 0.93, green: 0.94, blue: 0.97).opacity(0), location: 0.00),
+                                    Gradient.Stop(color: Color(red: 0.93, green: 0.94, blue: 0.97), location: 1.00),
                                 ],
                                 startPoint: UnitPoint(x: 0.5, y: 0),
                                 endPoint: UnitPoint(x: 0.5, y: 1)
-                                )
-                            }
+                            )
                         }
+                    }
                     VStack(alignment: .center, spacing: 32){
-                            Text("Connect with Talky")
-                                .font(.title)
-                                .fontWeight(.bold)
-                        VStack(spacing:16){
-                            Button{
-                                toRegister.toggle()
+                        Text("Connect with Talky")
+                            .font(.title)
+                            .fontWeight(.bold)
+                        VStack(spacing:16) {
+                            NavigationLink {
+                                RegisterxView()
                             } label: {
-                                HStack{
+                                HStack {
                                     Text("Start Messaging")
-                                    
+                                        .padding(.vertical, 20)
+                                        .frame(maxWidth: .infinity)
+                                    // `foregroundColor` has been renamed to `foregroundStyle` and will be deprecated in a future version of iOS
+                                        .foregroundStyle(Color.white)
+                                        .background(Color("primary"))
+                                        .cornerRadius(16)
                                 }
-                                .padding(.vertical, 20)
-                                .frame(maxWidth: .infinity)
-                                .foregroundColor(.white)
-                                .background(Color("primary"))
-                                .cornerRadius(16)
                             }
-                            Button{
-                                toLogin.toggle()
+                            NavigationLink {
+                                LoginxView()
                             } label: {
-                                HStack{
-                                    Text("Already have account?")
-                                        .foregroundColor(Color("secondaryDark"))
+                                HStack {
+                                    Text("Already have an account?")
+                                    // `foregroundColor` has been renamed to `foregroundStyle` and will be deprecated in a future version of iOS
+                                        .foregroundStyle(Color("secondaryDark"))
                                     Text("Log in")
-                                    
                                 }
                             }
                         }
