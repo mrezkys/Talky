@@ -33,19 +33,20 @@ struct EditProfileView: View {
                             .frame(width: 200, height: 200)
                             .cornerRadius(16)
                     } else {
-                        AsyncImage(url: URL(string: authViewModel.user!.profileImageUrl!)) { phase in
+                        // Explicitly unwrapping the optional causes previews to crash since there isn't any profile image url present or in app storage. 
+                        AsyncImage(url: URL(string: authViewModel.user?.profileImageUrl ?? "")) { phase in
                             switch phase {
                             case .empty:
                                 Rectangle()
                                     .frame(width: 200, height: 200)
                                     .cornerRadius(16)
-                                    .foregroundColor(Color("secondaryDark"))
+                                    // `foregroundColor` has been renamed to `foregroundStyle` and will be deprecated in a future version of iOS
+                                    .foregroundStyle(Color("secondaryDark"))
                             case .success(let image):
                                 // Display the image
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                
                                     .frame(width: 200, height: 200)
                                     .clipped()
                                     .cornerRadius(16)
@@ -54,7 +55,16 @@ struct EditProfileView: View {
                                 Rectangle()
                                     .frame(width: 200, height: 200)
                                     .cornerRadius(16)
-                                    .foregroundColor(.red)
+                                    // `foregroundColor` has been renamed to `foregroundStyle` and will be deprecated in a future version of iOS
+                                    .foregroundStyle(Color.red)
+                                // Handle unknown values using "@unknown default”
+                            @unknown default:
+                                if #available(iOS 17.0, *) {
+                                    // 'ContentUnavailableView' is only available in iOS 17.0 or newer
+                                    ContentUnavailableView("", systemImage: "")
+                                } else {
+                                    fatalError()
+                                }
                             }
                         }
                     }
@@ -63,7 +73,8 @@ struct EditProfileView: View {
                         shouldShowImagePicker.toggle()
                     } label: {
                         Image(systemName: "camera")
-                            .foregroundColor(.white)
+                            // `foregroundColor` has been renamed to `foregroundStyle` and will be deprecated in a future version of iOS
+                            .foregroundStyle(Color.white)
                             .padding(8)
                             .background(Color("primary"))
                             .cornerRadius(8)
@@ -85,7 +96,8 @@ struct EditProfileView: View {
                     .cornerRadius(16)
                     .multilineTextAlignment(.leading)
                     .lineLimit(1)
-                    .foregroundColor(.black)
+                    // `foregroundColor` has been renamed to `foregroundStyle` and will be deprecated in a future version of iOS
+                    .foregroundStyle(Color.black)
                     .opacity(0.5)
                 SecureTextField(placeholder: "Current Password", show: $showPassword, text: $currpassword)
                 SecureTextField(placeholder: "New Password", show: $showPassword, text: $password)
@@ -95,8 +107,7 @@ struct EditProfileView: View {
             Spacer()
         }
         .onAppear{
-            
-                email = authViewModel.user?.email ?? ""
+            email = authViewModel.user?.email ?? ""
         }
         .navigationTitle("Edit Profile")
         .navigationBarItems(
@@ -111,11 +122,9 @@ struct EditProfileView: View {
                     Text(authViewModel.viewState == .loading ? "Loading..." : "Save")
                 }
         )
-        
         .alert(isPresented: $showAlert) {
             Alert(title: Text(authViewModel.logMessage))
         }
-        
         .onChange(of: authViewModel.viewState, perform: { newValue in
             if newValue == .error{
                 showAlert = true
@@ -125,13 +134,12 @@ struct EditProfileView: View {
             ImagePicker(image: $authViewModel.image)
                 .ignoresSafeArea()
         }
-        
     }
-    
 }
 
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
         EditProfileView()
+            .environmentObject(AuthViewModel())
     }
 }
