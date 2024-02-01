@@ -17,7 +17,6 @@ class AuthViewModel: ObservableObject {
     // other variables for registering new user
     @Published var repassword = ""
     @Published var image: UIImage?
-    
     @Published var user: ChatUser?
     @Published var fcm: String?
     
@@ -28,7 +27,6 @@ class AuthViewModel: ObservableObject {
             getCurrentUser()
         }
     }
-
     
     private func getCurrentUser(){
         if let savedData = UserDefaults.standard.data(forKey: "xxxx") {
@@ -57,9 +55,9 @@ class AuthViewModel: ObservableObject {
     
     func handleSignOut() async {
         do{
-            try  FirebaseManager.shared.auth.signOut()
+            try FirebaseManager.shared.auth.signOut()
             loggedOut = true
-        } catch{
+        } catch {
             print(error)
         }
     }
@@ -70,15 +68,12 @@ class AuthViewModel: ObservableObject {
             await persistImageToStorage()
             await saveUserData()
             getCurrentUser()
-            
-            
-            
         } else {
             viewState = .empty
         }
-        if(!currPassword.isEmpty && !newPassword.isEmpty && !newRePassword.isEmpty){
+        if (!currPassword.isEmpty && !newPassword.isEmpty && !newRePassword.isEmpty){
             await resetPassword(email: email, currPassword: currPassword, newPassword: newPassword, newRePassword: newRePassword)
-        }else {
+        } else {
             viewState = .empty
         }
         
@@ -89,9 +84,9 @@ class AuthViewModel: ObservableObject {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
         let ref = FirebaseManager.shared.storage.reference(withPath: uid)
         guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
-
-
-        let metadata =  ref.putData(imageData, metadata: nil)
+        
+        // Initialization of immutable value 'metadata' was never used; considered replacing it with an assignment to '_' or removing it.
+        _ =  ref.putData(imageData, metadata: nil)
         
         do {
             let url = try await ref.downloadURL()
@@ -106,12 +101,10 @@ class AuthViewModel: ObservableObject {
         }
         
     }
-
+    
     
     func resetPassword(email: String, currPassword: String, newPassword: String, newRePassword: String) async {
-        guard let user = FirebaseManager.shared.auth.currentUser else {
-            return
-        }
+        guard let user = FirebaseManager.shared.auth.currentUser else { return }
         
         if newPassword != newRePassword {
             viewState = .error
@@ -121,17 +114,17 @@ class AuthViewModel: ObservableObject {
         
         viewState = .loading
         let credential = EmailAuthProvider.credential(withEmail: email, password: currPassword)
-           
+        
         do {
             try await user.reauthenticate(with: credential)
             try await user.updatePassword(to: newPassword)
             viewState = .loaded
-        } catch{
+        } catch {
             print(error)
             logMessage = "Error : \(error)"
             viewState = .error
         }
-       
+        
     }
     
     func login() async {
@@ -213,12 +206,9 @@ class AuthViewModel: ObservableObject {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
         let userData = ["fcm" : userFCM]
         
-        
         await updateUserProfile(uid: uid, updateData: userData)
-        
-        
     }
-
+    
     
     private func storeUserInformation() async {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
